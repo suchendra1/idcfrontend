@@ -1,11 +1,28 @@
 import {Component} from "react"
 import Cookies from "js-cookie"
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
 import "./index.css"
 
 class ShowRecord extends Component{
     state={
         medicalDetails:[],
         dataIsLoaded:false
+    }
+
+    generatePDF = medicalDetails => {
+        let keys=[];
+        for (var k in medicalDetails[0])
+            keys.push(k)
+        keys=keys.slice(4,-3)
+        const tableColumns=["date"].concat(medicalDetails.map(eachDetail=>eachDetail.date));
+        const tableRows = keys.map(eachKey=>
+            {return [eachKey].concat(medicalDetails.map(eachRecord=>{return eachRecord[eachKey]}))});
+        var doc = new jsPDF()
+        doc.text("memberid:",10,10)
+        doc.autoTable(tableColumns,tableRows, {styles: {font: "rotobo"}},{startY:20})
+        doc.save("123.pdf")
     }
 
     componentDidMount (){
@@ -36,6 +53,7 @@ class ShowRecord extends Component{
             return <p>Please wait!!!</p>
         else{
             return <div className="showrecord-container">
+                <button onClick={() => this.generatePDF(medicalDetails)}>Generate pdf</button>
                 <table className="showrecordtable"><tbody>
                 {keys.map(
                     eachKey=>
