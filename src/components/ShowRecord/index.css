@@ -3,6 +3,7 @@ table {
     border-spacing: 0;
     width: 100%;
     border: 1px solid #ddd;
+    margin-top:20px;
   }
   
   th, td {
@@ -13,3 +14,23 @@ table {
   tr:nth-child(even) {
     background-color: #f2f2f2;
   }
+
+.showrecord-container{
+  display:flex;
+  flex-direction: column;
+}
+
+.generate-btn{
+  background-color: #007196;
+  height:50px;
+  width:130px;
+  color: white;
+  border-style:none;
+  align-self: center;
+  margin:20px;
+  border-radius:20px;
+}
+
+.generate-btn:hover{
+  background-color: #5c92af;
+}

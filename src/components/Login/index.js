@@ -2,6 +2,7 @@ import {Component} from "react"
 import Cookies from 'js-cookie'
 
 import './index.css'
+import './index.scss'
 
 class Login extends Component{
     state={
@@ -42,13 +43,18 @@ class Login extends Component{
     }
 
     render (){
+        const {ID,password}=this.state;
         return(
             <div className="login-container">
                 <h3>Login</h3>
-                {/* <label className="label" htmlFor="id" >ID</label> */}
-                <input className="input" type="text" id="id" placeholder="ID" onChange={this.onChangeID}/>
-                {/* <label className="label" htmlFor="password" >Password</label> */}
-                <input className="input" type="password" id="password" placeholder="Password" onChange={this.onChangePassword}/>
+                <div class="form__group field">
+                    <input type="input" class="form__field" placeholder="ID" name="ID" id='ID' onChange={this.onChangeID} value={ID} required />
+                    <label for="name" class="form__label">Name</label>
+                </div>
+                <div class="form__group field">
+                    <input type="input" class="form__field" placeholder="Password" name="password" id='password' value={password} onChange={this.onChangePassword} required />
+                    <label for="name" class="form__label">Password</label>
+                </div>
                 <button type="button" className="submit-button bn632-hover bn20" onClick={this.onClickLogin}>Login</button>
             </div>
         )

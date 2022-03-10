@@ -32,7 +32,8 @@
     height:40px;
     color: white;
     border:none;
-    margin-top:40px
+    margin-top:40px;
+    align-self:center;
 }
 
 .bn632-hover {
@@ -50,6 +51,8 @@
     -o-transition: all .4s ease-in-out;
     -webkit-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
+    width:300px;
+    align-self:center;
   }
   
   .bn632-hover:hover {
@@ -58,10 +61,14 @@
     -o-transition: all .4s ease-in-out;
     -webkit-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
+    width:300px;
+    align-self:center;
   }
   
   .bn632-hover:focus {
     outline: none;
+    width:300px;
+    align-self:center;
   }
   
   .bn632-hover.bn20 {
@@ -73,4 +80,6 @@
       #b523ff
     );
     box-shadow: 0 4px 15px 0 #6780fe;
+    width:300px;
+    align-self:center;
   }
