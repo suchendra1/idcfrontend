@@ -1,61 +1,115 @@
 import {Component} from "react"
 import Cookies from 'js-cookie'
+import {toast} from 'react-toastify';
 
 import './index.css'
 import './index.scss'
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure()
 
 class Login extends Component{
     state={
         ID:"",
-        password:""
+        mobile:"",
+        password:"",
+        error:"",
+        userType:"User"
     }
 
     onChangeID = (event) => {
         this.setState({ID:event.target.value});
     }
 
+    onChangeMobileNumber = event => {
+        this.setState({mobile:event.target.value});
+    }
+
     onChangePassword = event => {
         this.setState({password:event.target.value})
     }
 
+    OnChangeuserType = event=>{
+        this.setState({userType:event.target.value})
+    }
+
     onSubmitSuccess = jwtToken => {
         const {history,onLogChange} = this.props;
+        const {userType} = this.state
         Cookies.set('jwt_token', jwtToken, {expires: 30})
+        Cookies.set("user_type",userType)
+        this.setState({error:""})
         setTimeout(function() {}, 500);
-        history.replace('/');
-        onLogChange()
+        if(userType==="User"){
+            onLogChange("User")
+            history.replace("/showrecord")
+        }
+        else if(userType==="Doctor"){
+            onLogChange("Doctor")
+            history.replace("/showrecords")
+        }
+        else{
+            onLogChange("Lab Technician")
+            history.replace("/labtechrecord")
+        }
+    }
+
+    onSubmitFailure = message => {
+        this.setState({error:message})
     }
 
     onClickLogin = async event => {
-        const {ID, password} = this.state
-        const userDetails = {memberid:ID, password}
-        const url = 'http://localhost:3005/login'
+        const {ID, password,mobile,userType} = this.state
+        let userDetails;
+        switch(userType){
+            case "User":userDetails={memberid:ID,password};break;
+            case "Lab Technician":userDetails={mobile,password};break;
+            case "Doctor":userDetails={mobile,password};break;
+        }
+        let url = 'http://localhost:3005/'
+        switch(userType){
+            case "User" : url+="userlogin";break;
+            case "Lab Technician" : url+="techlogin";break;
+            case "Doctor" : url += "doctorlogin";break;
+        }
         const options = {
         method: 'POST',
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify(userDetails),
         }
         const response = await fetch(url, options)
-        const data = await response.json()
+
         if (response.ok === true) {
+            toast("login success!")
+            const data = await response.json()
             this.onSubmitSuccess(data.jwt_token)
+        }
+        else{
+            const {error} = await response.json()
+            this.onSubmitFailure(error)
         }
     }
 
     render (){
-        const {ID,password}=this.state;
+        const {ID,mobile,password,error,userType}=this.state;
+        let inputElement;
+        switch (userType){
+            case "User":inputElement = <input type="text" className="input" onChange={this.onChangeID} name="ID" id="ID" value={ID} placeholder="Member ID"/>;break;
+            case "Doctor":;
+            case "Lab Technician" : inputElement=<input type="text" className="input" onChange={this.onChangeMobileNumber} name="mobile" id="mobile" value={mobile} placeholder="Mobile Number"/>;
+        }
         return(
             <div className="login-container">
-                <h3>Login</h3>
-                <div class="form__group field">
-                    <input type="input" class="form__field" placeholder="ID" name="ID" id='ID' onChange={this.onChangeID} value={ID} required />
-                    <label for="name" class="form__label">Name</label>
-                </div>
-                <div class="form__group field">
-                    <input type="input" class="form__field" placeholder="Password" name="password" id='password' value={password} onChange={this.onChangePassword} required />
-                    <label for="name" class="form__label">Password</label>
-                </div>
+                <h3 className="login-heading">Login</h3>
+                <select name="userType" id="userType" onChange={this.OnChangeuserType}>
+                    <option value="User">User</option>
+                    <option value="Lab Technician">Lab Technician</option>
+                    <option value="Doctor">Doctor</option>
+                </select>
+                {inputElement}
+                <input type="password" className="input" onChange={this.onChangePassword} name="password" id="password" value={password} placeholder="Password"/>
                 <button type="button" className="submit-button bn632-hover bn20" onClick={this.onClickLogin}>Login</button>
+                <p className="error">{error}</p>
             </div>
         )
     }

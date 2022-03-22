@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import {Component} from "react"
+import { toast } from "react-toastify";
 
 import './index.css'
 
@@ -80,17 +81,18 @@ class NewRecord extends Component{
     onClickSubmit = async () => {
         const {mobileNo,date,name,BP,FBS,PPBS,RBS,HbA1C,Urea,Creatinine,Microalbuminuria,Complaints,file,OtherSignificantNotes} = this.state
         const medicalDetials = {mobileNo,date,name,BP,FBS,PPBS,RBS,HbA1C,Urea,Creatinine,Microalbuminuria,Complaints,OtherSignificantNotes};
-        const url = 'http://localhost:3005/newrecord'
+        const url = 'http://localhost:3005/newuserrecord';
         const options = {
             method: 'POST',
             headers:{"Content-Type":"application/json","Authorization":"BEARER "+Cookies.get("jwt_token")},
             body: JSON.stringify(medicalDetials),
         }
         const response = await fetch(url, options)
-        
-        const data = await response.json()
         if (response.ok === true) {
-            this.onSubmitSuccess(data.jwt_token)
+            toast.success("Data added successfully!!!");
+        }
+        else{
+            toast.error("Failed to add data!");
         }
     }
 

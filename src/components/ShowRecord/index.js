@@ -17,7 +17,6 @@ class ShowRecord extends Component{
         let keys=[];
         for (var k in medicalDetails[0])
             keys.push(k)
-        keys=keys.slice(4,-3)
         const tableColumns=["Date"].concat(medicalDetails.map(eachDetail=>eachDetail.date));
         const tableRows = keys.map(eachKey=>
             {return [eachKey].concat(medicalDetails.map(eachRecord=>{return eachRecord[eachKey]}))});
@@ -28,7 +27,7 @@ class ShowRecord extends Component{
     }
 
     componentDidMount (){
-        const url = 'http://localhost:3005/showrecord'
+        const url = 'http://localhost:3005/showuserrecord'
         const options = {
         method: 'GET',
         headers:{"Content-Type":"application/json",
@@ -44,7 +43,7 @@ class ShowRecord extends Component{
             })
         })
 
-        const url1 = 'http://localhost:3005/getmemberid';
+        const url1 = 'http://localhost:3005/getusermemberid';
         const options1 = {
         method: 'POST',
         headers:{"Content-Type":"application/json",
@@ -65,7 +64,7 @@ class ShowRecord extends Component{
         let keys=[]
         for (var k in medicalDetails[0])
             keys.push(k)
-        keys = keys.slice(3,-3);
+        console.log(keys);
         if(!dataIsLoaded)
             return <p>Please wait!!!</p>
         else{
@@ -74,7 +73,7 @@ class ShowRecord extends Component{
                 <table className="showrecordtable">
                     <tbody>
                         {keys.map(
-                            eachKey=>
+                            eachKey =>
                             <tr>
                                 <th>
                                     {eachKey}

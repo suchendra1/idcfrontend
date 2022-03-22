@@ -4,6 +4,13 @@
     align-self:center;
     width:50vw;
     max-width: 500px;
+    margin-top:70px;
+}
+
+.login-heading{
+  color:#007196;
+  font-size:30px;
+  font-family: "Roboto";
 }
 
 .label{

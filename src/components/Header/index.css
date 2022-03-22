@@ -6,7 +6,15 @@
     display:flex;
     margin-left:auto;
     width:30vw;
-    justify-content:space-between;
+    justify-content:space-around;
+    align-self:center;
+}
+
+.nav-menu-login-header{
+    display: flex;
+    margin-left:auto;
+    width:20vw;
+    justify-content:space-around;
     align-self:center;
 }
 
@@ -38,3 +46,4 @@ li{
     margin-top:1vh;
     margin-bottom:1vh;
 }
+
